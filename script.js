@@ -144,7 +144,7 @@ const displayMovements = function (movements, sort = false) {
         const movmentHtmlRow = `
         <div class="movements__row">
             <div class="movements__type movements__type--${transferType}">${i + 1} ${transferType}</div>
-            <div class="movements__value">${mov}€</div>
+            <div class="movements__value">${mov.toFixed(2)}€</div>
         </div>`;
 
         containerMovements.insertAdjacentHTML('afterbegin', movmentHtmlRow);
@@ -167,7 +167,7 @@ const calcDisplayBalance = function (acc) {
     acc.balance = acc.movements.reduce(function (acc, cur) {
         return acc + cur;
     }, 0);
-    labelBalance.textContent = `${acc.balance}€`;
+    labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
 }
 
 
@@ -175,19 +175,19 @@ const calcDisplaySummary = function (account) {
     const income = account.movements
         .filter(mov => mov > 0)
         .reduce((acc, curMov) => acc + curMov, 0);
-    labelSumIn.textContent = `${income}€`;
+    labelSumIn.textContent = `${income.toFixed(2)}€`;
 
     const outcome = account.movements
         .filter(mov => mov < 0)
         .reduce((acc, curMov) => acc + curMov, 0);
-    labelSumOut.textContent = `${Math.abs(outcome)}€`;
+    labelSumOut.textContent = `${Math.abs(outcome).toFixed(2)}€`;
 
     const interest = account.movements
         .filter(mov => mov > 0)
         .map(deposit => (deposit * account.interestRate) / 100)
         .filter(interest => interest > 1)
         .reduce((acc, deposit) => acc + deposit, 0)
-    labelSumInterest.textContent = `${(interest)}€`
+    labelSumInterest.textContent = `${(interest).toFixed(2)}€`
 }
 
 const updateUI = function (acc) {
@@ -302,7 +302,7 @@ btnClose.addEventListener('click', function (e) {
 btnLoan.addEventListener('click', function (e) {
     e.preventDefault();
 
-    const loanAmount = Number(inputLoanAmount.value);
+    const loanAmount = Math.floor(inputLoanAmount.value);
 
     if (loanAmount > 0 && currentAccount.movements.some(mov => mov > loanAmount * 0.1)) {
 
@@ -373,4 +373,51 @@ btnSort.addEventListener('click', function (e) {
 // // isInteger only to check Integer
 // console.log(Number.isInteger(34));
 // console.log(Number.isInteger(12.23));
+
+
+// /////////////////////////// Math and Rounding //////////////////////
+// console.log(Math.sqrt(25));
+// console.log(25 ** (1 / 2));
+// console.log(8 ** (1 / 3));
+
+// console.log(Math.max(12, 2, 34, 5, 11));
+
+// console.log(Math.min(5, 12, 18, 23, 13));
+
+// console.log(Math.E); //euler's number
+// console.log(Math.PI);
+// console.log((Math.PI * Number.parseFloat('5px') ** 2).toFixed(2));
+
+
+// console.log(Math.trunc(Math.random() * 6) + 1);
+
+// // 5 to 10 --> from (0...4)+1(5)=> 6,7,8,9,10
+
+// const randomInt = function (to, till) {
+//     return Math.trunc(Math.random() * (till - to)) + 1 + to;
+// }
+// console.log(randomInt(5, 10));
+
+// // Rounding Integers
+// console.log(Math.trunc(23.45));
+
+// console.log(Math.round(23.14));
+// console.log(Math.round(23.9));
+
+// console.log(Math.ceil(23.14));
+// console.log(Math.ceil(23.9));
+
+// console.log(Math.floor(23.14));
+// console.log(Math.floor('23.9')); //also convert input to the number
+
+// // diff b/w trunc and floor
+// console.log(Math.trunc(-23.12));
+// console.log(Math.floor(-23.12));
+
+// // Rounding decimals --> **returns in string
+// console.log((23.19).toFixed());
+// console.log((2.7953531).toFixed(2));
+// console.log((Math.PI).toFixed(2));
+
+// console.log(+(2.345).toFixed(2)); //changed to Number type
 
