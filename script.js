@@ -335,3 +335,42 @@ btnSort.addEventListener('click', function (e) {
 
 ///////////////////////// LECTURES WITH PROJECTS HANDLING //////////////////////////////
 
+// ///////////////////////// Converting And Checking Numbers /////////////////////////////
+
+// console.log(23 === 23.0);
+
+// // Base 10 -> 0 to 9. 1/10 = 0.1 3/10 = 3.3333333
+// // Binary base 2 -> 0 1
+// console.log(0.1 + 0.2);
+// console.log(0.1 + 0.2 === 0.3);
+
+// // Conversion
+// console.log(Number('23'));
+// console.log(+'32'); // can also convert but not recemended
+
+// // Parsing Int
+// console.log(Number.parseInt('12', 10));
+// console.log(Number.parseInt('12.23'));
+
+// console.log(Number.parseInt('23rem'));
+// console.log(Number.parseInt(' 29.34px '));
+
+// // Parsing float
+// console.log(Number.parseFloat('12.23'));
+// console.log(Number.parseFloat('23.34px  '));
+
+// // isNAN only to check NOT A NUMBER
+// console.log(Number.isNaN(20));
+// console.log(Number.isNaN(undefined + 3)); //NAN operation-->true
+// console.log(Number.isNaN(23 / 0));
+
+
+// // isFinite to check whether a number or not
+// console.log(Number.isFinite(20));
+// console.log(Number.isFinite('23'));
+// console.log(Number.isFinite(34 / 0)); //infinity
+
+// // isInteger only to check Integer
+// console.log(Number.isInteger(34));
+// console.log(Number.isInteger(12.23));
+
