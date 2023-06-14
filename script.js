@@ -463,3 +463,38 @@ btnSort.addEventListener('click', function (e) {
 // console.log(11 / 3);
 // console.log(11n / 3n);
 
+
+//////////////////////// Creating Dates //////////////////////
+
+// const now = new Date();
+// console.log(now);
+
+// console.log(new Date('Jun 14 2023'));
+// console.log(new Date('Dec 25 2023'));
+
+// console.log(new Date(2027, 10, 19, 9, 15, 23))
+
+// console.log(new Date(0))
+// console.log(new Date(3 * 24 * 60 * 60 * 1000));
+
+// // Working with Dates
+// const future = new Date(2027, 10, 19, 9, 15, 23, 123);
+// console.log(future);
+// console.log(future.getFullYear());
+// console.log(future.getMonth()); // 0 based
+// console.log(future.getDate());
+// console.log(future.getDay()); // day count
+// console.log(future.getHours());
+// console.log(future.getMinutes());
+// console.log(future.getSeconds());
+// console.log(future.getMilliseconds());
+
+// console.log(future.toDateString());
+// console.log(future.toISOString()); //Standard format
+
+// console.log(future.getTime());
+// console.log(new Date(1826595923123)); //count from 1jan1970
+
+// future.setFullYear(2040); // mutate
+// console.log(future);
+
