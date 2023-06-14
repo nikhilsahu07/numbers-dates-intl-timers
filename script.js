@@ -22,7 +22,7 @@ const account1 = {
         '2023-06-13T10:51:36.790Z',
     ],
     currency: 'EUR',
-    locale: 'pt-PT', // de-DE
+    locale: 'en-IN',
 };
 
 const account2 = {
@@ -42,7 +42,7 @@ const account2 = {
         '2023-06-10T12:01:20.894Z',
     ],
     currency: 'USD',
-    locale: 'en-US',
+    locale: 'hi-IN',
 };
 
 const account3 = {
@@ -82,7 +82,7 @@ const account4 = {
         '2023-06-11T12:01:20.894Z',
     ],
     currency: 'USD',
-    locale: 'en-US',
+    locale: 'en-IN',
 };
 
 const account5 = {
@@ -102,7 +102,7 @@ const account5 = {
         '2023-07-12T11:01:20.894Z',
     ],
     currency: 'USD',
-    locale: 'en-US',
+    locale: 'hi-IN',
 }
 
 const accounts = [account1, account2, account3, account4, account5];
@@ -133,7 +133,7 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const formatMovementDate = function (date) {
+const formatMovementDate = function (date, locale) {
     const calcDaysPassed = (date1, date2) => {
         return Math.round(
             Math.abs(
@@ -147,10 +147,11 @@ const formatMovementDate = function (date) {
     if (daysPassed === 1) return `YesterDay ${time}`;
     if (daysPassed <= 7) return `${daysPassed} days ago ${time}`;
 
-    const day = `${date.getDate()}`.padStart(2, 0);
-    const month = `${date.getMonth() + 1}`.padStart(2, 0);
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}, ${time}`
+    return new Intl.DateTimeFormat(locale).format(date) + ` ${time}`;
+    // const day = `${date.getDate()}`.padStart(2, 0);
+    // const month = `${date.getMonth() + 1}`.padStart(2, 0);
+    // const year = date.getFullYear();
+    // return `${day}/${month}/${year}, ${time}`
 
 }
 
@@ -163,7 +164,7 @@ const displayMovements = function (acc, sort = false) {
 
     movs.forEach(function (mov, i) {
         const trancDate = new Date(acc.movementsDates[i]);
-        const displayDate = formatMovementDate(trancDate);
+        const displayDate = formatMovementDate(trancDate, acc.locale);
 
         const transferType = mov > 0 ? 'deposit' : 'withdrawal';
         const movmentHtmlRow = `
@@ -241,6 +242,20 @@ btnLogin.addEventListener('click', function (e) {
         // Display UI and message
         labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(' ').at(0)}👋`;
         containerApp.style.opacity = 100;
+
+        // Create current Date Time INTL
+        const options = {
+            hour: 'numeric',
+            minute: 'numeric',
+            day: 'numeric',
+            month: '2-digit',
+            // month: 'long',
+            year: 'numeric',
+            weekday: 'short',
+        };
+        const now = new Date();
+        const formattedDateTime = `${new Intl.DateTimeFormat(currentAccount.locale, options).format(now)}`;
+        labelDate.textContent = formattedDateTime.slice(0, -7) + '⏲️' + formattedDateTime.slice(-7);
 
         // UpdateUI
         updateUI(currentAccount);
@@ -363,15 +378,15 @@ btnSort.addEventListener('click', function (e) {
     sorted = !sorted;
 });
 
-// Date 
-const now = new Date();
-const day = `${now.getDate()}`.padStart(2, 0);
-const month = `${now.getMonth() + 1}`.padStart(2, 0);
-const year = now.getFullYear();
-const hour = `${now.getHours()}`.padStart(2, 0);
-const min = `${now.getMinutes()}`.padStart(2, 0);
+// Date
+// const now = new Date();
+// const day = `${now.getDate()}`.padStart(2, 0);
+// const month = `${now.getMonth() + 1}`.padStart(2, 0);
+// const year = now.getFullYear();
+// const hour = `${now.getHours()}`.padStart(2, 0);
+// const min = `${now.getMinutes()}`.padStart(2, 0);
 
-labelDate.textContent = `${day}/${month}/${year} ⏲️${hour}:${min}`;
+// labelDate.textContent = `${day}/${month}/${year} ⏲️${hour}:${min}`;
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -555,4 +570,29 @@ labelDate.textContent = `${day}/${month}/${year} ⏲️${hour}:${min}`;
 // }
 
 // console.log(calcDaysPassed(2118080220000, 2117821020000));
+
+
+//////////////////// Internationalising Dates (Intl) //////////////////
+// Fake logins
+// containerApp.style.opacity = 100;
+// currentAccount = account1;
+// updateUI(currentAccount);
+
+// Intl API
+// const nowEx = new Date();
+// const options = {
+//     hour: 'numeric',
+//     minute: 'numeric',
+//     day: 'numeric',
+//     // month: '2-digit',
+//     month: 'long',
+//     year: 'numeric'
+// };
+// const locale = navigator.language;
+// console.log(locale); //en-IN
+
+// labelDate.textContent = new Intl.DateTimeFormat('hi-IN', options).format(nowEx)
+// labelDate.textContent = new Intl.DateTimeFormat(locale, options).format(nowEx)
+
+// Feel Free to READ MDN INTL API , there are many more features on this
 
