@@ -18,8 +18,8 @@ const account1 = {
         '2023-04-01T10:17:24.185Z',
         '2023-05-08T14:11:59.604Z',
         '2023-05-27T17:01:17.194Z',
-        '2023-07-11T23:36:17.929Z',
-        '2023-07-07T10:51:36.790Z',
+        '2023-06-11T23:36:17.929Z',
+        '2023-06-13T10:51:36.790Z',
     ],
     currency: 'EUR',
     locale: 'pt-PT', // de-DE
@@ -39,7 +39,7 @@ const account2 = {
         '2023-02-05T16:33:06.386Z',
         '2023-04-10T14:43:26.374Z',
         '2023-06-25T18:49:59.371Z',
-        '2023-07-10T12:01:20.894Z',
+        '2023-06-10T12:01:20.894Z',
     ],
     currency: 'USD',
     locale: 'en-US',
@@ -59,7 +59,7 @@ const account3 = {
         '2023-02-05T16:33:06.386Z',
         '2023-02-10T14:43:26.374Z',
         '2023-04-23T18:49:59.371Z',
-        '2023-07-09T12:01:20.894Z',
+        '2023-06-09T12:01:20.894Z',
     ],
     currency: 'USD',
     locale: 'en-US',
@@ -79,7 +79,7 @@ const account4 = {
         '2023-01-05T16:33:06.386Z',
         '2023-04-10T14:43:26.374Z',
         '2023-06-25T18:49:59.371Z',
-        '2023-07-11T12:01:20.894Z',
+        '2023-06-11T12:01:20.894Z',
     ],
     currency: 'USD',
     locale: 'en-US',
@@ -133,6 +133,28 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+const formatMovementDate = function (date) {
+    const calcDaysPassed = (date1, date2) => {
+        return Math.round(
+            Math.abs(
+                (date2 - date1) / (1000 * 60 * 60 * 24)
+            )
+        );
+    }
+    const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    const daysPassed = calcDaysPassed(new Date(), date);
+    if (daysPassed === 0) return `Today ${time}`;
+    if (daysPassed === 1) return `YesterDay ${time}`;
+    if (daysPassed <= 7) return `${daysPassed} days ago ${time}`;
+
+    const day = `${date.getDate()}`.padStart(2, 0);
+    const month = `${date.getMonth() + 1}`.padStart(2, 0);
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}, ${time}`
+
+}
+
+
 const displayMovements = function (acc, sort = false) {
     containerMovements.innerHTML = ``; //innHTML returns the whole div class with their tags.. the whole html
     // containerMovements.textContent = ``; //it only returns the text inside the tags
@@ -141,11 +163,7 @@ const displayMovements = function (acc, sort = false) {
 
     movs.forEach(function (mov, i) {
         const trancDate = new Date(acc.movementsDates[i]);
-        const day = `${trancDate.getDate()}`.padStart(2, 0);
-        const month = `${trancDate.getMonth() + 1}`.padStart(2, 0);
-        const year = trancDate.getFullYear();
-        const time = `${trancDate.getHours()}:${trancDate.getMinutes()}:${trancDate.getSeconds()}`
-        const displayDate = `${day}/${month}/${year}, ${time}`
+        const displayDate = formatMovementDate(trancDate);
 
         const transferType = mov > 0 ? 'deposit' : 'withdrawal';
         const movmentHtmlRow = `
@@ -522,4 +540,19 @@ labelDate.textContent = `${day}/${month}/${year} ⏲️${hour}:${min}`;
 
 // future.setFullYear(2040); // mutate
 // console.log(future);
+
+
+///////////////// Operations With Dates and Time ////////////////////
+// const future = new Date(2037, 1, 10, 1, 7);
+// console.log(+future); //converted to numbers in miliSec from 1-1-1970
+
+// const calcDaysPassed = (date1, date2) => {
+//     return Math.round(
+//         Math.abs(
+//             (date2 - date1) / (1000 * 60 * 60 * 24)
+//         )
+//     );
+// }
+
+// console.log(calcDaysPassed(2118080220000, 2117821020000));
 
