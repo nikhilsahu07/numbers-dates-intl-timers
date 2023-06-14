@@ -21,7 +21,7 @@ const account1 = {
         '2023-06-11T23:36:17.929Z',
         '2023-06-13T10:51:36.790Z',
     ],
-    currency: 'EUR',
+    currency: 'INR',
     locale: 'en-IN',
 };
 
@@ -61,7 +61,7 @@ const account3 = {
         '2023-04-23T18:49:59.371Z',
         '2023-06-09T12:01:20.894Z',
     ],
-    currency: 'USD',
+    currency: 'EUR',
     locale: 'en-US',
 };
 
@@ -101,7 +101,7 @@ const account5 = {
         '2023-06-29T18:49:59.371Z',
         '2023-07-12T11:01:20.894Z',
     ],
-    currency: 'USD',
+    currency: 'INR',
     locale: 'hi-IN',
 }
 
@@ -155,6 +155,12 @@ const formatMovementDate = function (date, locale) {
 
 }
 
+const formatCurrency = function (value, locale, currency) {
+    return new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency: currency,
+    }).format(value);
+}
 
 const displayMovements = function (acc, sort = false) {
     containerMovements.innerHTML = ``; //innHTML returns the whole div class with their tags.. the whole html
@@ -167,11 +173,12 @@ const displayMovements = function (acc, sort = false) {
         const displayDate = formatMovementDate(trancDate, acc.locale);
 
         const transferType = mov > 0 ? 'deposit' : 'withdrawal';
+        const formattedMov = formatCurrency(mov, acc.locale, acc.currency)
         const movmentHtmlRow = `
         <div class="movements__row">
             <div class="movements__type movements__type--${transferType}">${i + 1} ${transferType}</div>
             <div class="movements__date">${displayDate}</div>
-            <div class="movements__value">${mov.toFixed(2)}€</div>
+            <div class="movements__value">${formattedMov}</div>
         </div>`;
 
         containerMovements.insertAdjacentHTML('afterbegin', movmentHtmlRow);
@@ -194,7 +201,9 @@ const calcDisplayBalance = function (acc) {
     acc.balance = acc.movements.reduce(function (acc, cur) {
         return acc + cur;
     }, 0);
-    labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+    const formattedBalance = formatCurrency(acc.balance, acc.locale, acc.currency);
+
+    labelBalance.textContent = `${formattedBalance}`;
 }
 
 
@@ -202,19 +211,19 @@ const calcDisplaySummary = function (account) {
     const income = account.movements
         .filter(mov => mov > 0)
         .reduce((acc, curMov) => acc + curMov, 0);
-    labelSumIn.textContent = `${income.toFixed(2)}€`;
+    labelSumIn.textContent = `${formatCurrency(income, account.locale, account.currency)}`;
 
     const outcome = account.movements
         .filter(mov => mov < 0)
         .reduce((acc, curMov) => acc + curMov, 0);
-    labelSumOut.textContent = `${Math.abs(outcome).toFixed(2)}€`;
+    labelSumOut.textContent = formatCurrency(outcome, account.locale, account.currency);
 
     const interest = account.movements
         .filter(mov => mov > 0)
         .map(deposit => (deposit * account.interestRate) / 100)
         .filter(interest => interest > 1)
         .reduce((acc, deposit) => acc + deposit, 0)
-    labelSumInterest.textContent = `${(interest).toFixed(2)}€`
+    labelSumInterest.textContent = formatCurrency(interest, account.locale, account.currency)
 }
 
 const updateUI = function (acc) {
@@ -596,3 +605,28 @@ btnSort.addEventListener('click', function (e) {
 
 // Feel Free to READ MDN INTL API , there are many more features on this
 
+
+/////////////////// Internationalizing Numbers(Intl) ////////////////
+
+// const num = 2352100.34;
+
+// const options = {
+//     style: 'unit',
+//     // style: 'currency',
+//     // currency: 'EUR',
+//     // currency: 'INR',
+//     // style: 'percent',
+//     unit: 'kilometer-per-hour',
+//     // unit: 'celsius',
+//     // useGrouping: false, //remove the numeric separator
+
+// }
+
+
+// const numINR = new Intl.NumberFormat('hi-IN', options).format(num);
+// console.log('INR:  ', numINR);
+
+// const numUSD = new Intl.NumberFormat('en-US', options).format(num);
+// console.log('USD:  ', numUSD);
+// console.log('Germany:  ', new Intl.NumberFormat('de-DE', options).format(num));
+// console.log(`${navigator.language}:  `, new Intl.NumberFormat(navigator.language, options).format(num));
