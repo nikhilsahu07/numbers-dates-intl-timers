@@ -19,7 +19,7 @@ const account1 = {
         '2023-05-08T14:11:59.604Z',
         '2023-05-27T17:01:17.194Z',
         '2023-07-11T23:36:17.929Z',
-        '2023-07-7T10:51:36.790Z',
+        '2023-07-07T10:51:36.790Z',
     ],
     currency: 'EUR',
     locale: 'pt-PT', // de-DE
@@ -59,7 +59,7 @@ const account3 = {
         '2023-02-05T16:33:06.386Z',
         '2023-02-10T14:43:26.374Z',
         '2023-04-23T18:49:59.371Z',
-        '2023-07-9T12:01:20.894Z',
+        '2023-07-09T12:01:20.894Z',
     ],
     currency: 'USD',
     locale: 'en-US',
@@ -133,17 +133,25 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (movements, sort = false) {
+const displayMovements = function (acc, sort = false) {
     containerMovements.innerHTML = ``; //innHTML returns the whole div class with their tags.. the whole html
     // containerMovements.textContent = ``; //it only returns the text inside the tags
 
-    const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+    const movs = sort ? acc.movements.slice().sort((a, b) => a - b) : acc.movements;
 
     movs.forEach(function (mov, i) {
+        const trancDate = new Date(acc.movementsDates[i]);
+        const day = `${trancDate.getDate()}`.padStart(2, 0);
+        const month = `${trancDate.getMonth() + 1}`.padStart(2, 0);
+        const year = trancDate.getFullYear();
+        const time = `${trancDate.getHours()}:${trancDate.getMinutes()}:${trancDate.getSeconds()}`
+        const displayDate = `${day}/${month}/${year}, ${time}`
+
         const transferType = mov > 0 ? 'deposit' : 'withdrawal';
         const movmentHtmlRow = `
         <div class="movements__row">
             <div class="movements__type movements__type--${transferType}">${i + 1} ${transferType}</div>
+            <div class="movements__date">${displayDate}</div>
             <div class="movements__value">${mov.toFixed(2)}€</div>
         </div>`;
 
@@ -192,7 +200,7 @@ const calcDisplaySummary = function (account) {
 
 const updateUI = function (acc) {
     // Display movements
-    displayMovements(acc.movements);
+    displayMovements(acc);
 
     // Display Balance
     calcDisplayBalance(acc);
@@ -253,6 +261,10 @@ btnTransfer.addEventListener('click', function (e) {
         currentAccount.movements.push(Number(-transferAmount));
         recieverAccount.movements.push(Number(transferAmount));
 
+        // Add time
+        currentAccount.movementsDates.push(new Date().toISOString());
+        recieverAccount.movementsDates.push(new Date().toISOString());
+
         // Update UI
         updateUI(currentAccount);
         // console.log(accounts);
@@ -310,6 +322,9 @@ btnLoan.addEventListener('click', function (e) {
         // Add positive movements
         currentAccount.movements.push(loanAmount);
 
+        // Add time
+        currentAccount.movementsDates.push(new Date().toISOString());
+
         // Update UI
         updateUI(currentAccount);
 
@@ -326,9 +341,19 @@ let sorted = false;
 
 btnSort.addEventListener('click', function (e) {
     e.preventDefault();
-    displayMovements(currentAccount.movements, !sorted);
+    displayMovements(currentAccount, !sorted);
     sorted = !sorted;
 });
+
+// Date 
+const now = new Date();
+const day = `${now.getDate()}`.padStart(2, 0);
+const month = `${now.getMonth() + 1}`.padStart(2, 0);
+const year = now.getFullYear();
+const hour = `${now.getHours()}`.padStart(2, 0);
+const min = `${now.getMinutes()}`.padStart(2, 0);
+
+labelDate.textContent = `${day}/${month}/${year} ⏲️${hour}:${min}`;
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
