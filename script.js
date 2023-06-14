@@ -421,3 +421,45 @@ btnSort.addEventListener('click', function (e) {
 
 // console.log(+(2.345).toFixed(2)); //changed to Number type
 
+
+//////////// Remainder Operator, Numeric Seperator and Working with BigInt() /////////////
+
+// // Remainder Operator
+// labelBalance.addEventListener('click', function () {
+//     console.log('clicked');
+//     [...document.querySelectorAll('.movements__row')].forEach(function (row, i) {
+//         if (i % 2 === 0) row.style.backgroundColor = 'orangered';
+//         if (i % 3 === 0) row.style.backgroundColor = 'yellow';
+//     });
+// })
+
+// // Numeric separator
+// const diameter = 324_345_341_000_000;
+// console.log(diameter);
+
+// const price = 12_60;
+// console.log(price);
+
+// const PI = 3.141_5234;
+// console.log(PI);
+
+
+// // BigInt
+
+// console.log(2 ** 53 - 1); // safe integer // 64 bits for number but only 53 uses
+// // and rest use for sign symbols and other value
+// // Every bit contains two binary digits
+
+// console.log(Number.MAX_SAFE_INTEGER);
+
+// console.log(24385726091789575897943975349975430n); //bigint
+// console.log(BigInt(7589365890765890476895046950));
+
+// console.log(BigInt(9898990879807598809634786597) * BigInt(5870978569307896508695087469306890));
+
+// console.log(Number.MAX_SAFE_INTEGER + 2); //inaccurate result occur
+// console.log(typeof 20n);
+
+// console.log(11 / 3);
+// console.log(11n / 3n);
+
