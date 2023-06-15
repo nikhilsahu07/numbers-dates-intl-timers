@@ -237,8 +237,42 @@ const updateUI = function (acc) {
     calcDisplaySummary(acc);
 }
 
+//Bankist Timer
+const startLogOutTimer = function () {
+    const tick = function () {
+        const min = (Math.trunc(time / 60)).toString().padStart(2, 0);
+        const sec = (time % 60).toString().padStart(2, 0);
+        //in each call, show the remaining time to UI
+        labelTimer.textContent = `${min}:${sec}`;
+
+        //when 0 sec, stop timer and Logout user
+        if (time === 0) {
+            clearInterval(timer);
+            // Set up LOGIN welcome
+            containerApp.style.opacity = 0;
+            labelWelcome.textContent = `Log in to get started`;
+        }
+        console.clear();
+        console.log(`${min}:${sec}`);
+
+        time--;
+    };
+
+    //set time to 5 min
+    let time = 120;
+
+    //call the timer every sec
+    tick();
+    timer = setInterval(tick, 1000);
+    return timer;
+
+}
+
+
+
+
 // Event Listener
-let currentAccount;
+let currentAccount, timer;
 
 btnLogin.addEventListener('click', function (e) {
     // Prevent form from submitting and refreshing again
@@ -265,6 +299,10 @@ btnLogin.addEventListener('click', function (e) {
         const now = new Date();
         const formattedDateTime = `${new Intl.DateTimeFormat(currentAccount.locale, options).format(now)}`;
         labelDate.textContent = formattedDateTime.slice(0, -7) + '⏲️' + formattedDateTime.slice(-7);
+
+        //timer
+        if (timer) clearInterval(timer);
+        timer = startLogOutTimer();
 
         // UpdateUI
         updateUI(currentAccount);
@@ -324,6 +362,10 @@ btnTransfer.addEventListener('click', function (e) {
 
     }
 
+    //Reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
+
 });
 
 
@@ -379,6 +421,10 @@ btnLoan.addEventListener('click', function (e) {
 
 
     }
+
+    //Reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
 })
 
 ///// Sorting Movements
@@ -663,3 +709,11 @@ btnSort.addEventListener('click', function (e) {
 //     console.log(timeString);
 // }
 // setInterval(realClock, 1000)
+
+
+///////////// Implementing a count down timer ///////////////
+
+// // Fake login
+// containerApp.style.opacity = 100;
+// currentAccount = account1;
+// updateUI(currentAccount)
