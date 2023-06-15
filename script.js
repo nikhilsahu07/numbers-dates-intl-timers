@@ -360,15 +360,18 @@ btnLoan.addEventListener('click', function (e) {
 
     if (loanAmount > 0 && currentAccount.movements.some(mov => mov > loanAmount * 0.1)) {
 
-        alert(`Amount of ${loanAmount}€ is successfully granted to your account..💰`)
-        // Add positive movements
-        currentAccount.movements.push(loanAmount);
+        setTimeout(function () {
+            alert(`Amount of ${loanAmount}€ is successfully granted to your account..💰`)
+            // Add positive movements
+            currentAccount.movements.push(loanAmount);
 
-        // Add time
-        currentAccount.movementsDates.push(new Date().toISOString());
+            // Add time
+            currentAccount.movementsDates.push(new Date().toISOString());
 
-        // Update UI
-        updateUI(currentAccount);
+            // Update UI
+            updateUI(currentAccount);
+        }, 2500)
+
 
         // Clear input field
         inputLoanAmount.value = ``;
@@ -630,3 +633,33 @@ btnSort.addEventListener('click', function (e) {
 // console.log('USD:  ', numUSD);
 // console.log('Germany:  ', new Intl.NumberFormat('de-DE', options).format(num));
 // console.log(`${navigator.language}:  `, new Intl.NumberFormat(navigator.language, options).format(num));
+
+
+// //////////////// Timers: setTimeout() AND setInterval() //////////////////////
+
+// //setTimeout(callBackFunc, timeInMiliSec, ...allArguements);
+// const ingredients = ['olives', 'brocalli', 'paneer']
+// const pizzaTimer = setTimeout(
+//     (ing1, ing2, ing3) => console.log(`Here is your pizza with ${ing1}, ${ing2} and ${ing3}.🍕`),
+//     // 3000, `olives`, `brocalli`
+//     3000, ...ingredients
+// );
+// console.log(`Waiting for Pizza to be made..!`);
+
+// if (ingredients.includes('brocalli')) clearTimeout(pizzaTimer);
+
+//setInterval()
+// setInterval(function () {
+//     // console.log(new Date())
+// }, 1000)
+
+// const realClock = function () {
+//     const now = new Date();
+//     const hours = now.getHours() > 12 ? `${now.getHours() - 12}`.padStart(2, 0) : `${now.getHours()}`.padStart(2, 0);
+//     const mins = `${now.getMinutes()}`.padStart(2, 0);
+//     const secs = `${now.getSeconds()}`.padStart(2, 0);
+//     const timeString = `${hours}:${mins}:${secs} ${now.getHours > 12 ? `PM` : `AM`}`
+//     console.clear()
+//     console.log(timeString);
+// }
+// setInterval(realClock, 1000)
